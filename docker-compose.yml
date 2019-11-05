@@ -12,9 +12,11 @@ services:
       - "3000:3000"
     environment:
       DB_DATABASE: ${DB_DATABASE_NAME}
+    restart: unless-stopped
     command: ["rails", "server", "-b", "0.0.0.0"]
   db:
     image: mysql:latest
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE_NAME}

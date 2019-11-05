@@ -39,7 +39,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
-  config.active_storage.service = :local
+  # config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
@@ -88,6 +88,9 @@ Rails.application.configure do
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
+
+  # Pipe log to process 1 for docker-compose  
+  config.logger = Logger.new('/proc/1/fd/1')
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

@@ -47,8 +47,6 @@ The last command will spit out a really long string. Copy that string.
 Inside of the `.env` file, we will configure the database and set the application secret.
 
 ```
-RAILS_ENV=production
-
 SECRET_KEY_BASE=really-long-string-from-above
 
 DB_USERNAME=your-db-user
@@ -58,7 +56,7 @@ DB_HOST=stdnote_db
 DB_PORT=3306
 ```
 
-Once you've set your environment variables, running standardnote server is simple:
+Once you've set your environment variables we'll set up the rails application and database connection
 
 ```bash
 $ docker-compose build
@@ -66,4 +64,33 @@ $ docker-compose build
 $ docker-compose up -d
 ```
 
-This will start a production instance of standardnote server in the background and can be accessable on port 3000
+Then we'll need to allow the server to write to the db. We need to attach to the database container:
+
+```bash
+$ docker exec -it ruby-server_db_1 /bin/bash
+```
+
+Then log into MySQL and make the necessary changes:
+
+```bash
+$ mysql -u root -p
+# You'll be prompted for your root password
+
+mysql> ALTER USER 'your-standard-note-database-user]'@'%' IDENTIFIED WITH mysql_native_password BY 'your-standard-note-db-user-password';
+```
+
+If successful you'll see
+
+```bash
+Query OK, 0 rows affected (0.00 sec)
+```
+
+Then we can exit out of the program and container by typing `exit` twice.
+
+Finally, we just need to run the migration on the database:
+
+```bash
+$ docker exec ruby-server_server_1 rails db:migrate
+```
+
+This will leave you with a production instance of standardnote server in the background and can be accessible via the web app at `http://localhost:3000` or at your IP address, port 3000
