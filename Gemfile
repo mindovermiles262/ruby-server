@@ -9,6 +9,7 @@ gem 'responders', '~> 2.0'
 gem 'rotp'
 gem 'secure_headers'
 gem 'standard-file', '0.3.5', require: 'standard_file'
+gem 'tzinfo-data'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -28,7 +29,7 @@ group :development, :test do
   gem 'sqlite3'
 end
 
-group :production, :staging do
+group :production, :staging, :docker do
   gem 'mysql2', '>= 0.3.13', '< 0.5'
 end
 

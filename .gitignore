@@ -38,4 +38,7 @@ dump.rdb
 .ruby-version
 
 # sqlite databases
-db/*.sqlite
+db/*.sqlite3
+
+# vim swap files
+*.swp

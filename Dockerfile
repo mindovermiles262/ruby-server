@@ -1,26 +1,14 @@
-FROM ubuntu:16.04
+FROM ruby:2.6-alpine
+MAINTAINER Andy Duss <mindovermiles262@gmail.com>
 
-ENV PROJECT_DIR=/data/src/
+RUN apk add --update alpine-sdk sqlite-dev mariadb-dev
 
-RUN DEBIAN_FRONTEND=noninteractive \
-    apt-get -y update && \
-    apt-get -y install git build-essential ruby-dev ruby-rails libz-dev libmysqlclient-dev curl tzdata && \
-    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-    apt-get -y update && \
-    apt-get -y install nodejs && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    apt-get autoremove -y && \
-    apt-get clean
+COPY Gemfile /standard_note/Gemfile
+COPY Gemfile.lock /standard_note/Gemfile.lock
+WORKDIR /standard_note
+RUN gem install bundler && bundle install
 
-WORKDIR $PROJECT_DIR
+COPY . /standard_note
+RUN rails db:migrate
 
-COPY Gemfile Gemfile.lock $PROJECT_DIR
-RUN bundle install
-
-COPY . $PROJECT_DIR
-RUN bundle exec rake assets:precompile
-
-EXPOSE 3000
-
-ENTRYPOINT [ "./docker/entrypoint" ]
-CMD [ "start" ]
+CMD ["rails", "server", "-b", "0.0.0.0"]
