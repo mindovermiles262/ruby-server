@@ -1,7 +1,0 @@
-# git
-.git/
-.gitignore
-
-Dockerfile
-Dockerfile-nginx
-node_modules
