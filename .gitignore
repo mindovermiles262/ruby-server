@@ -36,3 +36,6 @@ dump.rdb
 
 # rbenv
 .ruby-version
+
+# sqlite databases
+db/*.sqlite
