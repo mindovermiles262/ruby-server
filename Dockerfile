@@ -11,4 +11,5 @@ RUN gem install bundler && bundle install
 COPY . /standard_note
 RUN rails db:migrate
 
+EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
